@@ -1,0 +1,19 @@
+{
+  "name": "Ninja im Weltraum",
+  "short_name": "Ninja",
+  "description": "2D-Weltraum-Parkour: springe, sammle Münzen und besiege die Elementar-Gegner!",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b0b2e",
+  "theme_color": "#0b0b2e",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Cdefs%3E%3CradialGradient id='g' cx='50%25' cy='40%25' r='70%25'%3E%3Cstop offset='0' stop-color='%231a0b3d'/%3E%3Cstop offset='1' stop-color='%230b0b2e'/%3E%3C/radialGradient%3E%3C/defs%3E%3Crect width='512' height='512' rx='96' fill='url(%23g)'/%3E%3Cg fill='%23ff2e63'%3E%3Cpath d='M256 96l28 92 92 28-92 28-28 92-28-92-92-28 92-28z'/%3E%3C/g%3E%3Crect x='176' y='300' width='160' height='70' rx='28' fill='%232d2d44'/%3E%3Crect x='176' y='322' width='160' height='20' fill='%23ff2e63'/%3E%3Crect x='262' y='325' width='34' height='14' rx='4' fill='%237afcff'/%3E%3C/svg%3E",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

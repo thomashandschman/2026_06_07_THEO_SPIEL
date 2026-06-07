@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no" />
+  <meta name="theme-color" content="#0b0b2e" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Ninja im Weltraum" />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="stylesheet" href="./styles.css" />
+  <title>Ninja im Weltraum</title>
+</head>
+<body>
+  <!-- Spiel-Canvas (füllt den ganzen Bildschirm, Letterbox in viewport.js) -->
+  <canvas id="game"></canvas>
+
+  <!-- ===================== HUD (während des Spiels) ===================== -->
+  <div id="hud">
+    <div class="hud-top">
+      <div id="hud-score" class="hud-pill">⭐ 0</div>
+      <div id="hud-world" class="hud-pill">Welt</div>
+      <div id="hud-lives" class="hud-pill">❤️❤️❤️</div>
+    </div>
+    <div id="hud-buffs"></div>
+  </div>
+
+  <!-- ===================== Touch-Steuerung ===================== -->
+  <div id="touch">
+    <div class="pad-left">
+      <button id="btn-left" class="tbtn" aria-label="Links">◀</button>
+      <button id="btn-right" class="tbtn" aria-label="Rechts">▶</button>
+    </div>
+    <div class="pad-right">
+      <button id="btn-throw" class="tbtn throw" aria-label="Werfen">✦</button>
+      <button id="btn-jump" class="tbtn jump" aria-label="Springen">▲</button>
+    </div>
+  </div>
+
+  <!-- ===================== Toast (kurze Hinweise) ===================== -->
+  <div id="toast"></div>
+
+  <!-- ===================== Hauptmenü ===================== -->
+  <div id="screen-menu" class="screen active">
+    <div class="panel">
+      <h1 class="logo">NINJA <span>IM</span> WELTRAUM</h1>
+      <p class="subtitle">🚀 Springe, sammle, kämpfe! 🥷</p>
+      <button id="btn-play" class="big-btn">Spiel starten</button>
+      <div id="menu-best" class="best">Rekord: 0</div>
+    </div>
+  </div>
+
+  <!-- ===================== Charakterauswahl ===================== -->
+  <div id="screen-select" class="screen">
+    <div class="panel">
+      <h2>Wähle deinen Ninja</h2>
+      <div id="char-cards" class="cards"></div>
+      <div class="row">
+        <button id="btn-back" class="small-btn">Zurück</button>
+        <button id="btn-start" class="big-btn">Los geht's!</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== Gewonnen ===================== -->
+  <div id="screen-win" class="screen">
+    <div class="panel">
+      <h1 class="win-title">Geschafft! 🎉</h1>
+      <p class="subtitle">Du hast alle Welten gemeistert!</p>
+      <div id="win-score" class="big-score">Punkte: 0</div>
+      <div id="win-best" class="best"></div>
+      <div class="row">
+        <button id="btn-menu" class="small-btn">Hauptmenü</button>
+        <button id="btn-again" class="big-btn">Nochmal spielen</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== Game Over ===================== -->
+  <div id="screen-gameover" class="screen">
+    <div class="panel">
+      <h1 class="go-title">Game Over</h1>
+      <p class="subtitle">Versuch es nochmal, Ninja!</p>
+      <div id="go-score" class="big-score">Punkte: 0</div>
+      <div id="go-best" class="best"></div>
+      <div class="row">
+        <button id="btn-menu2" class="small-btn">Hauptmenü</button>
+        <button id="btn-again2" class="big-btn">Nochmal spielen</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>
