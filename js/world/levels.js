@@ -1,0 +1,125 @@
+// levels.js — Reine Welt-Daten. Plattformen sind AABBs in Weltkoordinaten.
+// Bewusst von Hand gesetzt, damit Sprung-Lücken fair sind:
+//   Sprunghöhe ~144 px, max. Sprungweite ~200 px (siehe config.js).
+// Eine Plattform mit "move" pendelt automatisch (siehe entities/player update loop).
+
+export const WORLDS = [
+  // ---------------------------------------------------------------- Welt 1
+  {
+    id: 'station',
+    name: 'Neon-Raumstation',
+    theme: 'station',
+    width: 3700,
+    height: 960,
+    spawn: { x: 60, y: 760 },
+    goal: { x: 3560, y: 700, w: 56, h: 120 },
+    platforms: [
+      { x: 0,    y: 860, w: 520, h: 100 },
+      { x: 620,  y: 780, w: 200, h: 30 },
+      { x: 900,  y: 680, w: 180, h: 30 },
+      { x: 1160, y: 580, w: 160, h: 30 },
+      { x: 1180, y: 860, w: 520, h: 100 },
+      { x: 1820, y: 760, w: 160, h: 30 },
+      { x: 2060, y: 660, w: 160, h: 30, move: { axis: 'y', range: 90, speed: 50 } },
+      { x: 2320, y: 760, w: 180, h: 30 },
+      { x: 2600, y: 860, w: 420, h: 100 },
+      { x: 3120, y: 760, w: 160, h: 30 },
+      { x: 3360, y: 820, w: 340, h: 140 },
+    ],
+    coins: [
+      { x: 200, y: 800 }, { x: 300, y: 800 }, { x: 690, y: 720 },
+      { x: 960, y: 620 }, { x: 1210, y: 520 }, { x: 1300, y: 800 },
+      { x: 1880, y: 700 }, { x: 2110, y: 580 }, { x: 2380, y: 700 },
+      { x: 2700, y: 800 }, { x: 2800, y: 800 }, { x: 3180, y: 700 },
+      { x: 3420, y: 760 }, { x: 3480, y: 760 },
+    ],
+    enemies: [
+      { type: 'water',     x: 1300, y: 812 },
+      { type: 'lightning', x: 2680, y: 812 },
+      { type: 'speed',     x: 3160, y: 712, range: 120 },
+    ],
+  },
+
+  // ---------------------------------------------------------------- Welt 2
+  {
+    id: 'asteroids',
+    name: 'Asteroidengürtel',
+    theme: 'asteroids',
+    width: 4000,
+    height: 960,
+    spawn: { x: 60, y: 760 },
+    goal: { x: 3860, y: 640, w: 56, h: 120 },
+    platforms: [
+      { x: 0,    y: 860, w: 360, h: 100 },
+      { x: 470,  y: 800, w: 140, h: 28 },
+      { x: 700,  y: 700, w: 140, h: 28, move: { axis: 'x', range: 120, speed: 60 } },
+      { x: 980,  y: 760, w: 140, h: 28 },
+      { x: 1220, y: 640, w: 140, h: 28 },
+      { x: 1460, y: 540, w: 140, h: 28 },
+      { x: 1700, y: 660, w: 160, h: 28 },
+      { x: 1960, y: 760, w: 180, h: 28 },
+      { x: 2240, y: 660, w: 140, h: 28, move: { axis: 'y', range: 110, speed: 55 } },
+      { x: 2480, y: 760, w: 160, h: 28 },
+      { x: 2740, y: 660, w: 140, h: 28 },
+      { x: 2980, y: 560, w: 140, h: 28 },
+      { x: 3220, y: 680, w: 160, h: 28 },
+      { x: 3480, y: 780, w: 180, h: 28 },
+      { x: 3740, y: 760, w: 260, h: 200 },
+    ],
+    coins: [
+      { x: 150, y: 800 }, { x: 520, y: 740 }, { x: 760, y: 640 },
+      { x: 1030, y: 700 }, { x: 1270, y: 580 }, { x: 1510, y: 480 },
+      { x: 1760, y: 600 }, { x: 2020, y: 700 }, { x: 2290, y: 600 },
+      { x: 2540, y: 700 }, { x: 2800, y: 600 }, { x: 3030, y: 500 },
+      { x: 3280, y: 620 }, { x: 3540, y: 720 }, { x: 3800, y: 700 },
+    ],
+    enemies: [
+      { type: 'speed',     x: 980, y: 712, range: 100 },
+      { type: 'lightning', x: 1960, y: 712 },
+      { type: 'speed',     x: 2480, y: 712, range: 130 },
+      { type: 'water',     x: 3740, y: 712 },
+    ],
+  },
+
+  // ---------------------------------------------------------------- Welt 3
+  {
+    id: 'fireplanet',
+    name: 'Feuerplanet',
+    theme: 'fireplanet',
+    width: 4200,
+    height: 960,
+    spawn: { x: 60, y: 760 },
+    goal: { x: 4060, y: 700, w: 56, h: 120 },
+    platforms: [
+      { x: 0,    y: 860, w: 420, h: 100 },
+      { x: 540,  y: 800, w: 160, h: 28 },
+      { x: 800,  y: 720, w: 150, h: 28 },
+      { x: 1060, y: 640, w: 150, h: 28, move: { axis: 'x', range: 130, speed: 70 } },
+      { x: 1360, y: 720, w: 150, h: 28 },
+      { x: 1620, y: 800, w: 160, h: 28 },
+      { x: 1880, y: 700, w: 150, h: 28 },
+      { x: 2140, y: 600, w: 150, h: 28, move: { axis: 'y', range: 120, speed: 65 } },
+      { x: 2400, y: 700, w: 150, h: 28 },
+      { x: 2660, y: 800, w: 160, h: 28 },
+      { x: 2920, y: 700, w: 150, h: 28 },
+      { x: 3180, y: 600, w: 150, h: 28 },
+      { x: 3440, y: 700, w: 150, h: 28, move: { axis: 'x', range: 140, speed: 80 } },
+      { x: 3740, y: 760, w: 160, h: 28 },
+      { x: 3960, y: 820, w: 240, h: 140 },
+    ],
+    coins: [
+      { x: 200, y: 800 }, { x: 590, y: 740 }, { x: 850, y: 660 },
+      { x: 1110, y: 580 }, { x: 1410, y: 660 }, { x: 1670, y: 740 },
+      { x: 1930, y: 640 }, { x: 2190, y: 540 }, { x: 2450, y: 640 },
+      { x: 2710, y: 740 }, { x: 2970, y: 640 }, { x: 3230, y: 540 },
+      { x: 3490, y: 640 }, { x: 3790, y: 700 }, { x: 4020, y: 760 },
+    ],
+    enemies: [
+      { type: 'fire',  x: 800, y: 672 },
+      { type: 'speed', x: 1620, y: 752, range: 120 },
+      { type: 'fire',  x: 2400, y: 652 },
+      { type: 'fire',  x: 2920, y: 652 },
+      { type: 'speed', x: 3740, y: 712, range: 130 },
+    ],
+  },
+];
