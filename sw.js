@@ -1,7 +1,7 @@
 // sw.js — Service Worker: cache-first für Offline-Spiel und
 // Add-to-Home-Screen. Bei jeder Veröffentlichung CACHE-Version erhöhen.
 
-const CACHE = 'ninja-weltraum-v2';
+const CACHE = 'ninja-weltraum-v3';
 const ASSETS = [
   './',
   './index.html',
@@ -27,6 +27,7 @@ const ASSETS = [
   './js/entities/powerups.js',
   './js/ui/render.js',
   './js/ui/screens.js',
+  './js/ui/loader.js',
 ];
 
 self.addEventListener('install', (e) => {

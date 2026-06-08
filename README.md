@@ -68,7 +68,8 @@ js/
   engine/               loop, viewport, input, game (Zustandsautomat)
   world/                levels (Daten), physics (AABB), camera
   entities/             player, enemies, projectile, pickups, powerups
-  ui/                   render (Zeichnen), screens (DOM/HUD/Highscore)
+  ui/                   render (Zeichnen), screens (DOM/HUD/Highscore),
+                        loader (Ninja-Lade-Intro)
 ```
 
 Zum Anpassen des Spielgefühls (Tempo, Sprungkraft, Farben, Texte) genügt meist
