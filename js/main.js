@@ -14,6 +14,9 @@ function boot() {
   const screens = new Screens();
   const game = new Game(viewport, input, screens);
 
+  // Beim Drehen des Geräts (Hoch-/Querformat) das Spiel neu ausrichten.
+  viewport.onChange = () => game.onViewportChange();
+
   // Touch-Buttons binden (Pointer Events => Multi-Touch).
   input.bindTouchButtons({
     left: document.getElementById('btn-left'),

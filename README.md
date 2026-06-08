@@ -1,8 +1,9 @@
 # 🥷 Ninja im Weltraum
 
 Ein 2D-Plattform- und Parkour-Spiel im Weltall-Design – für Kinder leicht zu
-verstehen, aber spannend zu spielen. Optimiert für das **iPhone** (Hochformat,
-Touch-Steuerung, Vollbild als Web-App).
+verstehen, aber spannend zu spielen. Optimiert für das **iPhone** (Touch-Steuerung,
+Vollbild als Web-App). Das Spielfeld dreht sich **automatisch** mit dem Gerät:
+Hochformat (540×960) zeigt mehr in die Höhe, Querformat (960×540) mehr in die Breite.
 
 > *Landing On A Cloud* – springe von Plattform zu Plattform durch drei Welten,
 > sammle Münzen, besiege die vier Elementar-Gegner und schnapp dir ihre Kräfte!
@@ -12,7 +13,8 @@ Touch-Steuerung, Vollbild als Web-App).
 ### Auf dem iPhone (empfohlen)
 1. Die GitHub-Pages-URL des Projekts in **Safari** öffnen.
 2. Über **Teilen → „Zum Home-Bildschirm"** als Vollbild-App hinzufügen.
-3. App starten – läuft dann im Hochformat und auch offline.
+3. App starten – läuft im Hoch- **oder** Querformat (dreht automatisch mit) und
+   auch offline.
 
 ### Lokal testen
 ES-Module brauchen einen Webserver (nicht `file://`):
@@ -23,7 +25,8 @@ python3 -m http.server 8000
 ```
 
 Dann `http://localhost:8000` öffnen. Am besten in der Geräteansicht der
-Browser-DevTools ein iPhone im Hochformat wählen.
+Browser-DevTools ein iPhone wählen und zwischen Hoch- und Querformat umschalten,
+um die automatische Drehung zu testen.
 
 ## Steuerung
 

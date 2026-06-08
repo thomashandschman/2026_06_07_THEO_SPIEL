@@ -25,6 +25,14 @@ export class Game {
     this.menuTime = 0;
   }
 
+  // Orientierungswechsel (Hoch-/Querformat): Sterne fürs neue Seitenverhältnis
+  // neu aufbauen und die Kamera sofort wieder auf den Spieler zentrieren,
+  // damit nichts außerhalb des nun anders großen Sichtfelds hängen bleibt.
+  onViewportChange() {
+    this.menuStars = R.makeStars(VIRT_W * 2, VIRT_H);
+    if (this.world) this.camera.follow(this.world.player, this.world.level, true);
+  }
+
   // --- Ablaufsteuerung ---------------------------------------------------
   toMenu() { this.state = 'menu'; this.input.reset(); this.screens.show('menu'); }
   toSelect() { this.state = 'select'; this.input.reset(); this.screens.show('select'); }
