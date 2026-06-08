@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Ninja im Weltraum — App-Icon. Farben aus js/config.js (Standard-Ninja
+       + Themen). Maskable-Safe-Zone: wichtige Inhalte im Kreis r≈205 um die
+       Mitte. -->
+  <defs>
+    <radialGradient id="space" cx="50%" cy="38%" r="75%">
+      <stop offset="0" stop-color="#1a0b3d"/>
+      <stop offset="1" stop-color="#0b0b2e"/>
+    </radialGradient>
+    <radialGradient id="shuriGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#aef0ff" stop-opacity="0.9"/>
+      <stop offset="1" stop-color="#aef0ff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Hintergrund -->
+  <rect width="512" height="512" rx="112" fill="url(#space)"/>
+
+  <!-- Sternenfeld -->
+  <g fill="#9ad7ff">
+    <circle cx="86"  cy="112" r="3"/>
+    <circle cx="430" cy="96"  r="4"/>
+    <circle cx="462" cy="226" r="2.5"/>
+    <circle cx="64"  cy="248" r="2.5"/>
+    <circle cx="120" cy="420" r="3"/>
+    <circle cx="402" cy="404" r="3.5"/>
+    <circle cx="256" cy="64"  r="2.5"/>
+  </g>
+  <g fill="#ffffff">
+    <circle cx="448" cy="150" r="2"/>
+    <circle cx="92"  cy="356" r="2"/>
+    <circle cx="372" cy="60"  r="1.8"/>
+  </g>
+
+  <!-- wehende Stirnband-Bänder (hinter dem Kopf) -->
+  <g fill="#cb0f13" opacity="0.95">
+    <path d="M168 206 L96 190 L92 212 L168 224 Z"/>
+    <path d="M168 222 L104 236 L116 258 L168 240 Z"/>
+  </g>
+
+  <!-- Ninja-Kopf (Standard-Ninja: body #2d2d44) -->
+  <rect x="156" y="150" width="200" height="234" rx="66" fill="#2d2d44"/>
+
+  <!-- Stirnband (accent #ff2e63) -->
+  <rect x="150" y="198" width="212" height="34" rx="6" fill="#ff2e63"/>
+  <!-- kleiner Knoten am Band -->
+  <circle cx="168" cy="215" r="9" fill="#ff2e63"/>
+
+  <!-- Augen-Maske (#0b0b1e) -->
+  <rect x="166" y="244" width="180" height="58" rx="18" fill="#0b0b1e"/>
+
+  <!-- entschlossene Cyan-Augen (#7afcff) -->
+  <g fill="#7afcff">
+    <polygon points="184,262 234,272 234,284 184,278"/>
+    <polygon points="328,262 278,272 278,284 328,278"/>
+  </g>
+
+  <!-- Wurfstern (Shuriken), Cyan mit Glühen -->
+  <circle cx="328" cy="350" r="58" fill="url(#shuriGlow)"/>
+  <g>
+    <path d="M328 308 L339 339 L370 350 L339 361 L328 392 L317 361 L286 350 L317 339 Z"
+          fill="#7afcff"/>
+    <circle cx="328" cy="350" r="7" fill="#0b0b2e"/>
+  </g>
+</svg>

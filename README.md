@@ -49,8 +49,10 @@ Bewegen, Springen und Werfen funktionieren gleichzeitig (Multi-Touch).
 ## Technik
 
 - Reines **HTML5 Canvas + Vanilla JavaScript** (ES-Module), **kein Build-Schritt**.
-- **Keine externen Asset-Dateien** – alle Grafiken werden prozedural gezeichnet.
-- **PWA:** `manifest.webmanifest` + `sw.js` für Offline-Betrieb und Vollbild.
+- **Alle Spielgrafiken prozedural** gezeichnet – die einzigen Asset-Dateien
+  sind die App-Icons in `icons/`.
+- **PWA:** `manifest.webmanifest` + `sw.js` für Offline-Betrieb und Vollbild,
+  inkl. App-Icon fürs Home-Bildschirm-Symbol.
 
 ### Projektstruktur
 
@@ -59,6 +61,7 @@ index.html              Host: Canvas + DOM-Overlays + Touch-Buttons
 styles.css              Layout, Safe-Area, Touch-Buttons, Screens
 manifest.webmanifest    PWA-Manifest (Hochformat, Standalone)
 sw.js                   Service Worker (Offline-Cache)
+icons/                  App-Icon (SVG-Quelle + PNG 192/512 + Apple-Touch)
 js/
   main.js               Einstieg, verdrahtet alles
   config.js             Alle Tunables, Farben und deutschen Texte
