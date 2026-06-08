@@ -6,6 +6,7 @@ import { Input } from './engine/input.js';
 import { Screens } from './ui/screens.js';
 import { Game } from './engine/game.js';
 import { startLoop } from './engine/loop.js';
+import { runIntro } from './ui/loader.js';
 
 function boot() {
   const canvas = document.getElementById('game');
@@ -34,8 +35,11 @@ function boot() {
   bind('btn-menu', () => game.toMenu());
   bind('btn-menu2', () => game.toMenu());
 
+  // Menü vorbereiten und Spiel-Schleife starten; das Ninja-Lade-Intro liegt
+  // als Overlay darüber und blendet danach sanft ins Menü aus.
   game.toMenu();
   startLoop((dt) => game.update(dt), () => game.render());
+  runIntro(() => game.toMenu());
 
   // Doppeltipp-Zoom / Scrollen auf iOS unterbinden.
   document.addEventListener('gesturestart', (e) => e.preventDefault());

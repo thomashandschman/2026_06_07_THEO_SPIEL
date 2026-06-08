@@ -37,6 +37,23 @@ html, body {
   inset: 0;
 }
 
+/* ===================== Lade-Intro ===================== */
+#screen-loading {
+  position: absolute;
+  inset: 0;
+  z-index: 50;            /* über allen Screens/HUD, bis das Intro ausblendet */
+  display: none;
+  background: var(--bg-deep);
+}
+#screen-loading.active { display: block; }
+#loader-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+}
+
 /* ===================== HUD ===================== */
 #hud {
   position: absolute;

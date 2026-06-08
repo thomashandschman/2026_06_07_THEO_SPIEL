@@ -27,6 +27,7 @@ const ASSETS = [
   './js/entities/powerups.js',
   './js/ui/render.js',
   './js/ui/screens.js',
+  './js/ui/loader.js',
 ];
 
 self.addEventListener('install', (e) => {
