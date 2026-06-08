@@ -7,6 +7,28 @@ export class Camera {
   constructor() {
     this.x = 0;
     this.y = 0;
+    // Bildschirm-Wackler (Screen-Shake) für wuchtige Treffer/Explosionen.
+    this.shake = 0;     // aktuelle Stärke (klingt ab)
+    this.shakeX = 0;    // pro Frame gewürfelter Versatz, im Render benutzt
+    this.shakeY = 0;
+  }
+
+  // Stärke aufaddieren (gedeckelt), wird über update() abgebaut.
+  addShake(amount) {
+    this.shake = Math.min(36, this.shake + amount);
+  }
+
+  // Pro Frame: Wackel-Stärke abbauen und neuen Zufallsversatz würfeln.
+  update(dt) {
+    if (this.shake > 0.2) {
+      this.shake = Math.max(0, this.shake - dt * 70);
+      this.shakeX = (Math.random() * 2 - 1) * this.shake;
+      this.shakeY = (Math.random() * 2 - 1) * this.shake;
+    } else {
+      this.shake = 0;
+      this.shakeX = 0;
+      this.shakeY = 0;
+    }
   }
 
   follow(target, level, instant = false) {

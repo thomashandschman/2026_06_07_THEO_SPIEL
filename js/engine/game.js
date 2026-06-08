@@ -23,6 +23,7 @@ export class Game {
     this.world = null;
     this.menuStars = R.makeStars(VIRT_W * 2, VIRT_H);
     this.menuTime = 0;
+    this.hitstop = 0;   // kurzes "Einfrieren" für wuchtige Explosionen
   }
 
   // --- Ablaufsteuerung ---------------------------------------------------
@@ -33,6 +34,10 @@ export class Game {
     // Frischer Lauf: Spieler mit gewähltem Skin, bei Level 0 beginnen.
     this.player = makePlayer(this.screens.selectedSkin, WORLDS[0].spawn);
     this.totalScore = 0;
+    this.hitstop = 0;
+    this.camera.shake = 0;
+    this.camera.shakeX = 0;
+    this.camera.shakeY = 0;
     this.loadLevel(0);
     this.state = 'play';
     this.input.reset();
@@ -64,6 +69,7 @@ export class Game {
       coins: src.coins.map(c => makeCoin(c.x, c.y)),
       drops: [],
       particles: [],
+      explosions: [],
       score: this.totalScore,
       time: 0,
       stars: R.makeStars(level.width, level.height),
@@ -81,6 +87,14 @@ export class Game {
     const w = this.world;
     const lvl = w.level;
     const player = w.player;
+
+    // Hit-Stop: nach einer Explosion läuft die Zeit kurz in Zeitlupe,
+    // das gibt dem Treffer ordentlich Wucht. Wackler/Partikel laufen weiter.
+    if (this.hitstop > 0) {
+      this.hitstop -= dt;
+      dt *= 0.12;
+    }
+
     w.time += dt;
 
     this._updateMovingPlatforms(lvl, player, w.time);
@@ -114,8 +128,10 @@ export class Game {
     // Drops
     for (const d of w.drops) updateDrop(d, dt);
 
-    // Partikel
+    // Partikel & Explosionen
     this._updateParticles(dt);
+    this._updateExplosions(dt);
+    this.camera.update(dt);
 
     this._collisions(w, player);
 
@@ -170,12 +186,16 @@ export class Game {
         if (aabb(proj, e)) {
           proj.alive = false;
           const killed = hitEnemy(e, proj.dmg);
-          this._spawnParticles(e.x + e.w / 2, e.y + e.h / 2, ELEMENTS[e.element].color, killed ? 14 : 5);
           if (killed) {
+            // Großes Spektakel: Schockwelle, Feuerball, Funken, Wackler.
+            this._spawnExplosion(e.x + e.w / 2, e.y + e.h / 2, ELEMENTS[e.element]);
             w.score += ENEMY_POINTS;
             const drop = makeDrop(e.x + e.w / 2 - 14, e.y, e.element);
             drop._restY = e.y + e.h - 28;
             w.drops.push(drop);
+          } else {
+            // Nur getroffen: kleines Funkenwölkchen.
+            this._spawnParticles(e.x + e.w / 2, e.y + e.h / 2, ELEMENTS[e.element].color, 5);
           }
           break;
         }
@@ -260,15 +280,86 @@ export class Game {
     }
   }
 
+  // Wuchtige Explosion beim Besiegen eines Gegners: mehrere Schichten,
+  // damit es richtig knallt — Blitz-Flash, zwei Schockwellen, ein
+  // langsamer Feuerball, schnelle Funken-Splitter und glühende Asche.
+  _spawnExplosion(x, y, el) {
+    const w = this.world;
+    const col = el.color;
+    const glow = el.glow;
+
+    // Bildschirm-Wackler + kurze Zeitlupe für den Aufprall-Moment.
+    this.camera.addShake(26);
+    this.hitstop = 0.07;
+
+    // Greller Lichtblitz im Kern.
+    w.explosions.push({ kind: 'flash', x, y, r: 95, life: 0.18, maxLife: 0.18, color: '#ffffff' });
+    // Zwei Schockwellen-Ringe (innen schnell+hell, außen weiter+langsamer).
+    w.explosions.push({ kind: 'shock', x, y, r0: 8, r1: 120, life: 0.42, maxLife: 0.42, width: 7, color: glow });
+    w.explosions.push({ kind: 'shock', x, y, r0: 4, r1: 175, life: 0.62, maxLife: 0.62, width: 4, color: col });
+
+    // Feuerball-Kern: große, leuchtende, langsam schrumpfende Brocken.
+    for (let i = 0; i < 14; i++) {
+      const ang = Math.random() * Math.PI * 2;
+      const sp = 30 + Math.random() * 150;
+      w.particles.push({
+        x, y,
+        vx: Math.cos(ang) * sp,
+        vy: Math.sin(ang) * sp - 50,
+        size: 8 + Math.random() * 12,
+        color: i % 2 ? col : glow,
+        life: 0.5 + Math.random() * 0.45,
+        maxLife: 0.95,
+        gravity: 180, glow: 18, shrink: true, additive: true,
+      });
+    }
+    // Schnelle Funken-Splitter, die weit wegspritzen.
+    for (let i = 0; i < 30; i++) {
+      const ang = Math.random() * Math.PI * 2;
+      const sp = 220 + Math.random() * 360;
+      w.particles.push({
+        x, y,
+        vx: Math.cos(ang) * sp,
+        vy: Math.sin(ang) * sp - 90,
+        size: 2 + Math.random() * 3,
+        color: Math.random() < 0.5 ? '#ffffff' : glow,
+        life: 0.35 + Math.random() * 0.5,
+        maxLife: 0.85,
+        gravity: 760, glow: 8, shrink: true, additive: true,
+      });
+    }
+    // Glühende Asche, die träge nachschwebt.
+    for (let i = 0; i < 10; i++) {
+      const ang = Math.random() * Math.PI * 2;
+      const sp = 40 + Math.random() * 90;
+      w.particles.push({
+        x, y,
+        vx: Math.cos(ang) * sp,
+        vy: Math.sin(ang) * sp - 30,
+        size: 3 + Math.random() * 4,
+        color: col,
+        life: 0.8 + Math.random() * 0.6,
+        maxLife: 1.4,
+        gravity: 90, glow: 10, shrink: true, additive: true,
+      });
+    }
+  }
+
   _updateParticles(dt) {
     const ps = this.world.particles;
     for (const p of ps) {
-      p.vy += 600 * dt;
+      p.vy += (p.gravity !== undefined ? p.gravity : 600) * dt;
       p.x += p.vx * dt;
       p.y += p.vy * dt;
       p.life -= dt;
     }
     this.world.particles = ps.filter(p => p.life > 0);
+  }
+
+  _updateExplosions(dt) {
+    const xs = this.world.explosions;
+    for (const x of xs) x.life -= dt;
+    this.world.explosions = xs.filter(x => x.life > 0);
   }
 
   _end(won) {
@@ -289,7 +380,10 @@ export class Game {
       if (!w) return;
       R.drawBackground(ctx, w.level.theme, this.camera, w.stars);
       ctx.save();
-      ctx.translate(-Math.round(this.camera.x), -Math.round(this.camera.y));
+      ctx.translate(
+        -Math.round(this.camera.x) + this.camera.shakeX,
+        -Math.round(this.camera.y) + this.camera.shakeY,
+      );
       R.drawPlatforms(ctx, w.level);
       R.drawGoal(ctx, w.level, w.time);
       for (const c of w.coins) R.drawCoin(ctx, c, w.time);
@@ -298,6 +392,7 @@ export class Game {
       for (const p of w.projectiles) R.drawProjectile(ctx, p);
       if (w.player.alive) R.drawPlayer(ctx, w.player, w.time);
       R.drawParticles(ctx, w.particles);
+      R.drawExplosions(ctx, w.explosions);
       ctx.restore();
     } else {
       // Menü-/Auswahl-Hintergrund: ruhiges driftendes Sternenfeld.
