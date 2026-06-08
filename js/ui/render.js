@@ -279,11 +279,63 @@ export function drawPlayer(ctx, player, time) {
 
 export function drawParticles(ctx, particles) {
   for (const p of particles) {
-    ctx.globalAlpha = Math.max(0, p.life / p.maxLife);
+    const t = Math.max(0, p.life / p.maxLife);
+    ctx.globalAlpha = t;
+    // Explosions-Partikel leuchten (additiv) und schrumpfen mit der Zeit.
+    const additive = !!p.additive;
+    if (additive) ctx.globalCompositeOperation = 'lighter';
+    if (p.glow) { ctx.shadowColor = p.color; ctx.shadowBlur = p.glow; }
     ctx.fillStyle = p.color;
-    ctx.fillRect(p.x, p.y, p.size, p.size);
+    if (p.glow || p.additive) {
+      // runde, weiche Funken
+      const r = (p.shrink ? p.size * (0.3 + 0.7 * t) : p.size) / 2;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, Math.max(0.5, r), 0, Math.PI * 2);
+      ctx.fill();
+    } else {
+      ctx.fillRect(p.x, p.y, p.size, p.size);
+    }
+    if (p.glow) ctx.shadowBlur = 0;
+    if (additive) ctx.globalCompositeOperation = 'source-over';
   }
   ctx.globalAlpha = 1;
+}
+
+// Explosions-Schichten: Lichtblitz (gefüllter Radialverlauf) und
+// expandierende Schockwellen-Ringe. Alles additiv für satten "Knall".
+export function drawExplosions(ctx, explosions) {
+  ctx.save();
+  ctx.globalCompositeOperation = 'lighter';
+  for (const x of explosions) {
+    const t = Math.max(0, x.life / x.maxLife); // 1 → 0
+    if (x.kind === 'flash') {
+      ctx.globalAlpha = t * t; // schneller Abfall
+      const grad = ctx.createRadialGradient(x.x, x.y, 0, x.x, x.y, x.r);
+      grad.addColorStop(0, '#ffffff');
+      grad.addColorStop(0.4, x.color);
+      grad.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(x.x, x.y, x.r, 0, Math.PI * 2);
+      ctx.fill();
+    } else if (x.kind === 'shock') {
+      const grow = 1 - t;                 // 0 → 1
+      const ease = 1 - Math.pow(t, 2.2);  // schnell raus, dann bremsend
+      const r = x.r0 + (x.r1 - x.r0) * ease;
+      ctx.globalAlpha = Math.pow(t, 0.6); // verblasst zum Ende
+      ctx.strokeStyle = x.color;
+      ctx.lineWidth = Math.max(1, x.width * (1 - grow * 0.7));
+      ctx.shadowColor = x.color;
+      ctx.shadowBlur = 14;
+      ctx.beginPath();
+      ctx.arc(x.x, x.y, r, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+    }
+  }
+  ctx.globalAlpha = 1;
+  ctx.globalCompositeOperation = 'source-over';
+  ctx.restore();
 }
 
 // --- kleine Zeichenhelfer ------------------------------------------------
