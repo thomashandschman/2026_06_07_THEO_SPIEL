@@ -1,9 +1,22 @@
 // config.js — Alle Tunables, Farben und deutschen Texte an einer zentralen Stelle.
 // Wer das Spielgefühl ändern will, ändert (fast) nur diese Datei.
 
-// --- Virtuelle Auflösung (Hochformat / Portrait) -------------------------
-export const VIRT_W = 540;
-export const VIRT_H = 960;
+// --- Virtuelle Auflösung (Hoch- & Querformat) ----------------------------
+// Das Spielfeld behält pro Orientierung ein festes Seitenverhältnis: die
+// lange Seite ist 960, die kurze 540. VIRT_W/VIRT_H sind *Live-Bindings*
+// (exportiertes `let`): nach setOrientation() sehen alle Importeure
+// (viewport, camera, render, game) automatisch die getauschten Maße.
+export const BASE_LONG = 960;
+export const BASE_SHORT = 540;
+export let VIRT_W = BASE_SHORT;   // Standard: Hochformat (540×960)
+export let VIRT_H = BASE_LONG;
+
+// Dreht das virtuelle Feld in Hoch- (false) oder Querformat (true).
+// Wird vom Viewport aufgerufen, sobald sich die Geräte-Orientierung ändert.
+export function setOrientation(landscape) {
+  VIRT_W = landscape ? BASE_LONG : BASE_SHORT;
+  VIRT_H = landscape ? BASE_SHORT : BASE_LONG;
+}
 
 // --- Physik --------------------------------------------------------------
 export const GRAVITY = 2000;        // px / s^2
